@@ -411,7 +411,8 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
   let optionCount = 0;
@@ -562,28 +563,25 @@
     document.getElementById('previewWrapper').classList.remove('visible');
   }
 
-  function downloadPDF() {
-    const container = document.getElementById('pdfContainer');
+  async function downloadPDF() {
     const cliente = document.getElementById('cliente').value.trim().replace(/\s+/g, '_') || 'cotizacion';
     const lugar = document.getElementById('lugar').value.trim().replace(/\s+/g, '_') || '';
     const filename = `Presupuesto_SOMOS_${cliente}${lugar ? '_'+lugar : ''}.pdf`;
 
-    const opt = {
-      margin: 0,
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'], before: '.page' }
-    };
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const pageWidth = 210;
+    const pageHeight = 297;
 
-    // Remove margin from first page for PDF
-    const pages = container.querySelectorAll('.page');
-    pages.forEach(p => p.style.marginBottom = '0');
+    const pages = document.querySelectorAll('.page');
+    for (let i = 0; i < pages.length; i++) {
+      const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight);
+    }
 
-    html2pdf().set(opt).from(container).save().then(() => {
-      pages.forEach(p => p.style.marginBottom = '30px');
-    });
+    pdf.save(filename);
   }
 
   // Init
