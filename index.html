@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizador SOMOS Agencia</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    /* ── FORM PANEL ── */
+    .form-panel {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.12);
+    }
+    .form-panel h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #d4742c;
+      font-size: 1.5rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label {
+      font-weight: 600;
+      font-size: .85rem;
+      color: #d4742c;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: .95rem;
+    }
+    .form-group textarea { resize: vertical; min-height: 60px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #d4742c;
+    }
+    .full-width { grid-column: 1 / -1; }
+
+    /* Options rows */
+    .options-section { margin-top: 24px; }
+    .options-section h3 {
+      color: #d4742c;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    .option-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 0.7fr 0.7fr 1fr auto;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+    .option-row .form-group label { font-size: .75rem; }
+    .option-row input { width: 100%; }
+    .btn-remove {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 1rem;
+      align-self: end;
+    }
+    .btn-remove:hover { background: #c0392b; }
+
+    .btn-add, .btn-generate {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+    .btn-add {
+      background: #f5f5f5;
+      color: #d4742c;
+      border: 2px solid #d4742c;
+    }
+    .btn-add:hover { background: #fdf0e6; }
+    .btn-generate {
+      background: #d4742c;
+      color: #fff;
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      font-size: 1.1rem;
+    }
+    .btn-generate:hover { background: #b8612a; }
+
+    /* Tareas */
+    .tareas-section { margin-top: 20px; }
+    .tarea-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .tarea-row input { flex: 1; }
+    .btn-remove-sm {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+    .btn-add-tarea {
+      background: none;
+      border: 1px dashed #d4742c;
+      color: #d4742c;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 6px;
+      font-size: .85rem;
+    }
+
+    /* Nota al pie */
+    .nota-section { margin-top: 20px; }
+
+    /* ── PREVIEW / PDF ── */
+    .preview-wrapper {
+      display: none;
+      justify-content: center;
+      padding: 30px 10px;
+      background: #e0e0e0;
+    }
+    .preview-wrapper.visible { display: flex; flex-direction: column; align-items: center; }
+
+    .preview-actions {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+    }
+    .preview-actions button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-download { background: #27ae60; color: #fff; }
+    .btn-download:hover { background: #219150; }
+    .btn-edit { background: #555; color: #fff; }
+    .btn-edit:hover { background: #333; }
+
+    #cotizacion {
+      width: 794px;
+      min-height: 1100px;
+      background: #fff;
+      position: relative;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Header bar */
+    .cot-header {
+      background: #d4742c;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cot-header h1 {
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .cot-header .brand {
+      text-align: right;
+      color: #fff;
+    }
+    .cot-header .brand .name {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+    .cot-header .brand .sub {
+      font-size: .85rem;
+      font-style: italic;
+      opacity: .9;
+    }
+
+    /* Info cards */
+    .cot-info {
+      padding: 30px 48px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .info-card {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .info-card .card-label {
+      background: transparent;
+      color: #d4742c;
+      font-weight: 700;
+      font-size: .75rem;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      letter-spacing: .5px;
+    }
+    .info-card .card-value {
+      padding: 8px 14px 12px;
+      font-size: .95rem;
+    }
+
+    /* Table */
+    .cot-table {
+      padding: 24px 48px 0;
+    }
+    .cot-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .cot-table thead th {
+      background: #d4742c;
+      color: #fff;
+      text-align: left;
+      padding: 10px 14px;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+    .cot-table tbody td {
+      padding: 12px 14px;
+      font-size: .9rem;
+      border-bottom: 1px solid #eee;
+    }
+    .cot-table tbody tr:nth-child(even) { background: #f9f9f9; }
+    .cot-table tbody td.total-cell {
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    /* Tareas */
+    .cot-tareas {
+      padding: 24px 48px 0;
+    }
+    .cot-tareas h3 {
+      font-size: .9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cot-tareas ul {
+      list-style: none;
+      padding-left: 8px;
+    }
+    .cot-tareas li {
+      font-size: .88rem;
+      margin-bottom: 4px;
+    }
+    .cot-tareas li::before {
+      content: '·  ';
+      font-weight: 700;
+    }
+
+    /* Nota */
+    .cot-nota {
+      padding: 30px 48px;
+      font-size: .78rem;
+      color: #777;
+      font-style: italic;
+    }
+
+    /* Footer bar */
+    .cot-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 12px;
+      display: flex;
+    }
+    .cot-footer .bar-orange { flex: 1; background: #d4742c; }
+    .cot-footer .bar-red { width: 30px; background: #c0392b; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 820px) {
+      #cotizacion { width: 100%; min-height: auto; }
+    }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .option-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .option-row .form-group:first-child { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ FORMULARIO ═══════ -->
+<div class="form-panel" id="formPanel">
+  <h2>Cotizador — SOMOS Agencia</h2>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Cliente</label>
+      <input type="text" id="cliente" placeholder="Ej: Adriel — Maravilla Créditos">
+    </div>
+    <div class="form-group">
+      <label>Lugar</label>
+      <input type="text" id="lugar" placeholder="Ej: Mendoza">
+    </div>
+    <div class="form-group">
+      <label>Fechas</label>
+      <input type="text" id="fechas" placeholder="Ej: 1 semana — lunes a viernes (5 días)">
+    </div>
+    <div class="form-group">
+      <label>Horario</label>
+      <input type="text" id="horario" placeholder="Ej: 9 a 13 hs (4 horas por día)">
+    </div>
+  </div>
+
+  <!-- Opciones -->
+  <div class="options-section">
+    <h3>Opciones de Presupuesto</h3>
+    <div id="optionsContainer">
+      <!-- rows dinámicas -->
+    </div>
+    <button class="btn-add" onclick="addOption()">+ Agregar opción</button>
+  </div>
+
+  <!-- Tareas del Staff -->
+  <div class="tareas-section">
+    <h3 style="color:#d4742c; font-size:1.1rem; margin-bottom:8px;">Tareas del Staff</h3>
+    <div id="tareasContainer"></div>
+    <button class="btn-add-tarea" onclick="addTarea()">+ Agregar tarea</button>
+  </div>
+
+  <!-- Nota al pie -->
+  <div class="nota-section">
+    <div class="form-group full-width">
+      <label>Nota al pie</label>
+      <textarea id="nota" rows="2">* Personal local (Mendoza). Los importes son actuales y tienen validez de 15 días. Incluye seguros obligatorios.</textarea>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="generate()">Generar Cotización</button>
+</div>
+
+<!-- ═══════ PREVIEW ═══════ -->
+<div class="preview-wrapper" id="previewWrapper">
+  <div class="preview-actions">
+    <button class="btn-download" onclick="downloadPDF()">Descargar PDF</button>
+    <button class="btn-edit" onclick="backToEdit()">Volver a editar</button>
+  </div>
+
+  <div id="cotizacion">
+    <!-- Header -->
+    <div class="cot-header">
+      <h1 id="cotNum">02 — Presupuesto</h1>
+      <div class="brand">
+        <div class="name">SOMOS</div>
+        <div class="sub">agencia</div>
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <div class="cot-info">
+      <div class="info-card">
+        <div class="card-label">Cliente</div>
+        <div class="card-value" id="pCliente"></div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Lugar</div>
+        <div class="card-value" id="pLugar"></div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Fechas</div>
+        <div class="card-value" id="pFechas"></div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Horario</div>
+        <div class="card-value" id="pHorario"></div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="cot-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Precio por día</th>
+            <th>Cantidad</th>
+            <th>Días</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="pTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Tareas -->
+    <div class="cot-tareas">
+      <h3>Tareas del Staff</h3>
+      <ul id="pTareas"></ul>
+    </div>
+
+    <!-- Nota -->
+    <div class="cot-nota" id="pNota"></div>
+
+    <!-- Footer bar -->
+    <div class="cot-footer">
+      <div class="bar-red"></div>
+      <div class="bar-orange"></div>
+    </div>
+  </div>
+</div>
+
+<!-- html2pdf -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+  let optionCount = 0;
+  let tareaCount = 0;
+
+  function formatMoney(n) {
+    return '$ ' + Number(n).toLocaleString('es-AR');
+  }
+
+  function addOption() {
+    optionCount++;
+    const letter = String.fromCharCode(64 + optionCount);
+    const container = document.getElementById('optionsContainer');
+    const div = document.createElement('div');
+    div.className = 'option-row';
+    div.id = 'opt-' + optionCount;
+    div.innerHTML = `
+      <div class="form-group">
+        <label>Concepto</label>
+        <input type="text" class="opt-concepto" placeholder="Ej: Opción ${letter} — 1 promotora (4 hs/día)" value="Opción ${letter} — ">
+      </div>
+      <div class="form-group">
+        <label>Precio/día</label>
+        <input type="number" class="opt-precio" placeholder="90000">
+      </div>
+      <div class="form-group">
+        <label>Cantidad</label>
+        <input type="number" class="opt-cantidad" value="1" min="1">
+      </div>
+      <div class="form-group">
+        <label>Días</label>
+        <input type="number" class="opt-dias" value="5" min="1">
+      </div>
+      <div class="form-group">
+        <label>Total</label>
+        <input type="text" class="opt-total" readonly style="background:#f5f5f5;">
+      </div>
+      <button class="btn-remove" onclick="removeOption(${optionCount})">✕</button>
+    `;
+    container.appendChild(div);
+
+    const precioInput = div.querySelector('.opt-precio');
+    const cantidadInput = div.querySelector('.opt-cantidad');
+    const diasInput = div.querySelector('.opt-dias');
+    const totalInput = div.querySelector('.opt-total');
+
+    function calcTotal() {
+      const p = parseFloat(precioInput.value) || 0;
+      const c = parseFloat(cantidadInput.value) || 0;
+      const d = parseFloat(diasInput.value) || 0;
+      totalInput.value = p && c && d ? formatMoney(p * c * d) : '';
+    }
+
+    precioInput.addEventListener('input', calcTotal);
+    cantidadInput.addEventListener('input', calcTotal);
+    diasInput.addEventListener('input', calcTotal);
+  }
+
+  function removeOption(id) {
+    const el = document.getElementById('opt-' + id);
+    if (el) el.remove();
+  }
+
+  function addTarea(value) {
+    tareaCount++;
+    const container = document.getElementById('tareasContainer');
+    const div = document.createElement('div');
+    div.className = 'tarea-row';
+    div.id = 'tarea-' + tareaCount;
+    div.innerHTML = `
+      <input type="text" class="tarea-text" value="${value || ''}" placeholder="Ej: Promoción de local en vía pública">
+      <button class="btn-remove-sm" onclick="removeTarea(${tareaCount})">✕</button>
+    `;
+    container.appendChild(div);
+  }
+
+  function removeTarea(id) {
+    const el = document.getElementById('tarea-' + id);
+    if (el) el.remove();
+  }
+
+  function generate() {
+    const cliente = document.getElementById('cliente').value.trim();
+    const lugar = document.getElementById('lugar').value.trim();
+    const fechas = document.getElementById('fechas').value.trim();
+    const horario = document.getElementById('horario').value.trim();
+    const nota = document.getElementById('nota').value.trim();
+
+    if (!cliente) { alert('Completá el nombre del cliente.'); return; }
+
+    document.getElementById('pCliente').textContent = cliente;
+    document.getElementById('pLugar').textContent = lugar;
+    document.getElementById('pFechas').textContent = fechas;
+    document.getElementById('pHorario').textContent = horario;
+    document.getElementById('pNota').textContent = nota;
+
+    const tbody = document.getElementById('pTableBody');
+    tbody.innerHTML = '';
+    const rows = document.querySelectorAll('.option-row');
+    rows.forEach(row => {
+      const concepto = row.querySelector('.opt-concepto').value;
+      const precio = parseFloat(row.querySelector('.opt-precio').value) || 0;
+      const cantidad = parseFloat(row.querySelector('.opt-cantidad').value) || 0;
+      const dias = parseFloat(row.querySelector('.opt-dias').value) || 0;
+      const total = precio * cantidad * dias;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${concepto}</td>
+        <td>${formatMoney(precio)}</td>
+        <td>${cantidad}</td>
+        <td>${dias}</td>
+        <td class="total-cell">${formatMoney(total)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const tareasList = document.getElementById('pTareas');
+    tareasList.innerHTML = '';
+    document.querySelectorAll('.tarea-text').forEach(input => {
+      if (input.value.trim()) {
+        const li = document.createElement('li');
+        li.textContent = input.value.trim();
+        tareasList.appendChild(li);
+      }
+    });
+
+    document.getElementById('formPanel').style.display = 'none';
+    document.getElementById('previewWrapper').classList.add('visible');
+  }
+
+  function backToEdit() {
+    document.getElementById('formPanel').style.display = 'block';
+    document.getElementById('previewWrapper').classList.remove('visible');
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById('cotizacion');
+    const cliente = document.getElementById('cliente').value.trim().replace(/\s+/g, '_') || 'cotizacion';
+    const lugar = document.getElementById('lugar').value.trim().replace(/\s+/g, '_') || '';
+    const filename = `Presupuesto_SOMOS_${cliente}${lugar ? '_' + lugar : ''}.pdf`;
+
+    const opt = {
+      margin:       0,
+      filename:     filename,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
+
+  // Init defaults
+  addOption();
+  addOption();
+  addTarea('Promoción de local en vía pública');
+  addTarea('Captación e interacción con público');
+</script>
+
+</body>
+</html>
