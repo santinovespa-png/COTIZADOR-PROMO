@@ -4,318 +4,193 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotizador SOMOS Agencia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background: #f0f0f0; color: #333; }
 
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f0f0f0;
-      color: #333;
-    }
-
-    /* ── FORM PANEL ── */
+    /* ══════════ FORM ══════════ */
     .form-panel {
-      max-width: 700px;
-      margin: 30px auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.12);
+      max-width: 720px; margin: 30px auto; background: #fff;
+      border-radius: 12px; padding: 32px; box-shadow: 0 2px 16px rgba(0,0,0,.1);
     }
-    .form-panel h2 {
-      text-align: center;
-      margin-bottom: 24px;
-      color: #d4742c;
-      font-size: 1.5rem;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+    .form-panel h2 { text-align: center; margin-bottom: 24px; color: #d4742c; font-size: 1.5rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; }
-    .form-group label {
-      font-weight: 600;
-      font-size: .85rem;
-      color: #d4742c;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
+    .form-group label { font-weight: 600; font-size: .8rem; color: #d4742c; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .3px; }
     .form-group input, .form-group select, .form-group textarea {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: .95rem;
+      padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: .92rem; font-family: inherit;
     }
-    .form-group textarea { resize: vertical; min-height: 60px; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      outline: none;
-      border-color: #d4742c;
-    }
+    .form-group textarea { resize: vertical; min-height: 55px; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #d4742c; }
     .full-width { grid-column: 1 / -1; }
+    .section-title { color: #d4742c; margin: 20px 0 10px; font-size: 1.05rem; font-weight: 700; }
 
-    /* Options rows */
-    .options-section { margin-top: 24px; }
-    .options-section h3 {
-      color: #d4742c;
-      margin-bottom: 12px;
-      font-size: 1.1rem;
-    }
     .option-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr 0.7fr 0.7fr 1fr auto;
-      gap: 8px;
-      align-items: end;
-      margin-bottom: 10px;
+      display: grid; grid-template-columns: 2.2fr 1fr .7fr .7fr 1fr auto;
+      gap: 8px; align-items: end; margin-bottom: 10px;
     }
-    .option-row .form-group label { font-size: .75rem; }
+    .option-row .form-group label { font-size: .7rem; }
     .option-row input { width: 100%; }
-    .btn-remove {
-      background: #e74c3c;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 14px;
-      cursor: pointer;
-      font-size: 1rem;
-      align-self: end;
-    }
+    .btn-remove { background: #e74c3c; color: #fff; border: none; border-radius: 6px; padding: 10px 13px; cursor: pointer; font-size: .95rem; align-self: end; }
     .btn-remove:hover { background: #c0392b; }
+    .btn-add { display: inline-block; margin-top: 8px; padding: 8px 18px; border: 2px solid #d4742c; border-radius: 6px; background: #fff; color: #d4742c; cursor: pointer; font-size: .88rem; font-weight: 600; }
+    .btn-add:hover { background: #fef5ee; }
 
-    .btn-add, .btn-generate {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: .95rem;
-      font-weight: 600;
-    }
-    .btn-add {
-      background: #f5f5f5;
-      color: #d4742c;
-      border: 2px solid #d4742c;
-    }
-    .btn-add:hover { background: #fdf0e6; }
-    .btn-generate {
-      background: #d4742c;
-      color: #fff;
-      width: 100%;
-      margin-top: 24px;
-      padding: 14px;
-      font-size: 1.1rem;
-    }
+    .tarea-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+    .tarea-row input { flex: 1; }
+    .btn-remove-sm { background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: .85rem; }
+    .btn-add-tarea { background: none; border: 1px dashed #d4742c; color: #d4742c; padding: 5px 14px; border-radius: 6px; cursor: pointer; margin-top: 4px; font-size: .82rem; }
+
+    .btn-generate { display: block; width: 100%; margin-top: 24px; padding: 14px; border: none; border-radius: 8px; background: #d4742c; color: #fff; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
     .btn-generate:hover { background: #b8612a; }
 
-    /* Tareas */
-    .tareas-section { margin-top: 20px; }
-    .tarea-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 6px;
+    /* Photo upload area */
+    .photo-upload { margin-top: 16px; }
+    .photo-drop {
+      border: 2px dashed #ccc; border-radius: 8px; padding: 20px; text-align: center;
+      color: #999; cursor: pointer; transition: border-color .2s;
     }
-    .tarea-row input { flex: 1; }
-    .btn-remove-sm {
-      background: #e74c3c;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-      font-size: .9rem;
-    }
-    .btn-add-tarea {
-      background: none;
-      border: 1px dashed #d4742c;
-      color: #d4742c;
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 6px;
-      font-size: .85rem;
-    }
+    .photo-drop:hover { border-color: #d4742c; }
+    .photo-drop.has-photo { border-style: solid; border-color: #27ae60; padding: 8px; }
+    .photo-drop img { max-width: 100%; max-height: 180px; border-radius: 4px; }
 
-    /* Nota al pie */
-    .nota-section { margin-top: 20px; }
-
-    /* ── PREVIEW / PDF ── */
-    .preview-wrapper {
-      display: none;
-      justify-content: center;
-      padding: 30px 10px;
-      background: #e0e0e0;
-    }
-    .preview-wrapper.visible { display: flex; flex-direction: column; align-items: center; }
-
-    .preview-actions {
-      margin-bottom: 16px;
-      display: flex;
-      gap: 12px;
-    }
-    .preview-actions button {
-      padding: 10px 24px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    /* ══════════ PREVIEW ══════════ */
+    .preview-wrapper { display: none; padding: 30px 10px; background: #d0d0d0; flex-direction: column; align-items: center; }
+    .preview-wrapper.visible { display: flex; }
+    .preview-actions { margin-bottom: 20px; display: flex; gap: 12px; }
+    .preview-actions button { padding: 10px 24px; border: none; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; }
     .btn-download { background: #27ae60; color: #fff; }
     .btn-download:hover { background: #219150; }
     .btn-edit { background: #555; color: #fff; }
     .btn-edit:hover { background: #333; }
 
-    #cotizacion {
-      width: 794px;
-      min-height: 1100px;
-      background: #fff;
-      position: relative;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      overflow: hidden;
+    /* ══════════ PDF PAGES ══════════ */
+    .pdf-container { width: 794px; }
+    .page {
+      width: 794px; height: 1123px; background: #fff; position: relative;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif; overflow: hidden;
+      margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,.15);
     }
 
-    /* Header bar */
-    .cot-header {
-      background: #d4742c;
-      padding: 28px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* ── PAGE 1: COVER ── */
+    .p1-sidebar { position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: #d4742c; }
+    .p1-logo { position: absolute; top: 40px; left: 48px; }
+    .p1-logo .logo-somos { font-size: 2.2rem; font-weight: 900; color: #333; line-height: 1; }
+    .p1-logo .logo-agencia { font-size: 1.6rem; font-weight: 700; color: #333; margin-left: 18px; line-height: 1; }
+    .p1-logo .logo-dot { color: #d4742c; }
+    .p1-divider { position: absolute; top: 120px; left: 48px; right: 48px; height: 1px; background: #ddd; }
+    .p1-title { position: absolute; top: 145px; left: 48px; width: 400px; }
+    .p1-title .subtitle { font-size: .95rem; font-style: italic; color: #555; margin-bottom: 6px; }
+    .p1-title h1 { font-size: 2.6rem; font-weight: 900; color: #333; line-height: 1.1; }
+    .p1-desc { position: absolute; top: 310px; left: 48px; width: 400px; font-size: .88rem; color: #555; line-height: 1.6; }
+    .p1-photo {
+      position: absolute; top: 420px; left: 48px; right: 48px; bottom: 70px;
+      background: #222; border-radius: 4px; overflow: hidden;
     }
-    .cot-header h1 {
-      color: #fff;
-      font-size: 2rem;
-      font-weight: 700;
+    .p1-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .p1-photo-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      padding: 40px 30px 30px;
+      text-align: center;
     }
-    .cot-header .brand {
-      text-align: right;
-      color: #fff;
-    }
-    .cot-header .brand .name {
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
-    .cot-header .brand .sub {
-      font-size: .85rem;
-      font-style: italic;
-      opacity: .9;
-    }
+    .p1-photo-overlay .years-label { font-size: .9rem; font-style: italic; color: #d4742c; }
+    .p1-photo-overlay .years-num { font-size: 3rem; font-weight: 900; color: #d4742c; line-height: 1.1; }
+    .p1-photo-overlay .years-sub { font-size: .85rem; color: rgba(255,255,255,.85); margin-top: 4px; }
+    .p1-photo-overlay .brand-bottom { margin-top: 16px; }
+    .p1-photo-overlay .brand-bottom span:first-child { font-size: 1.3rem; font-weight: 800; color: #fff; }
+    .p1-photo-overlay .brand-bottom span:last-child { font-size: .95rem; font-weight: 600; color: #fff; margin-left: 2px; }
+    .p1-contact { position: absolute; bottom: 24px; left: 48px; right: 48px; text-align: center; font-size: .78rem; color: #777; }
 
-    /* Info cards */
-    .cot-info {
-      padding: 30px 48px 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .info-card {
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .info-card .card-label {
-      background: transparent;
-      color: #d4742c;
-      font-weight: 700;
-      font-size: .75rem;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      letter-spacing: .5px;
-    }
-    .info-card .card-value {
-      padding: 8px 14px 12px;
-      font-size: .95rem;
-    }
+    /* ── PAGE 2: PRESUPUESTO ── */
+    .p2-header { background: #d4742c; padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .p2-header h1 { color: #fff; font-size: 2rem; font-weight: 700; }
+    .p2-header .brand { text-align: right; color: #fff; }
+    .p2-header .brand .name { font-size: 1.3rem; font-weight: 800; }
+    .p2-header .brand .sub { font-size: .8rem; font-style: italic; opacity: .9; }
+    .p2-info { padding: 30px 48px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .info-card { border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .info-card .card-label { color: #d4742c; font-weight: 700; font-size: .72rem; text-transform: uppercase; padding: 6px 14px; letter-spacing: .5px; }
+    .info-card .card-value { padding: 8px 14px 12px; font-size: .92rem; }
+    .p2-table { padding: 24px 48px 0; }
+    .p2-table table { width: 100%; border-collapse: collapse; }
+    .p2-table thead th { background: #d4742c; color: #fff; text-align: left; padding: 10px 14px; font-size: .82rem; font-weight: 600; }
+    .p2-table tbody td { padding: 12px 14px; font-size: .88rem; border-bottom: 1px solid #eee; }
+    .p2-table tbody tr:nth-child(even) { background: #f9f9f9; }
+    .p2-table .total-cell { font-weight: 700; font-size: .92rem; }
+    .p2-tareas { padding: 24px 48px 0; }
+    .p2-tareas h3 { font-size: .88rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
+    .p2-tareas ul { list-style: none; padding-left: 8px; }
+    .p2-tareas li { font-size: .85rem; margin-bottom: 4px; }
+    .p2-tareas li::before { content: '·  '; font-weight: 700; }
+    .p2-nota { padding: 28px 48px; font-size: .76rem; color: #777; font-style: italic; }
+    .p2-footer { position: absolute; bottom: 0; left: 0; right: 0; height: 10px; display: flex; }
+    .p2-footer .bar-red { width: 28px; background: #c0392b; }
+    .p2-footer .bar-orange { flex: 1; background: #d4742c; }
 
-    /* Table */
-    .cot-table {
-      padding: 24px 48px 0;
-    }
-    .cot-table table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .cot-table thead th {
-      background: #d4742c;
-      color: #fff;
-      text-align: left;
-      padding: 10px 14px;
-      font-size: .85rem;
-      font-weight: 600;
-    }
-    .cot-table tbody td {
-      padding: 12px 14px;
-      font-size: .9rem;
-      border-bottom: 1px solid #eee;
-    }
-    .cot-table tbody tr:nth-child(even) { background: #f9f9f9; }
-    .cot-table tbody td.total-cell {
-      font-weight: 700;
-      font-size: .95rem;
-    }
+    /* ── PAGE 3: CONDICIONES ── */
+    .p3-sidebar { position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: #d4742c; }
+    .p3-header { padding: 36px 48px 0 48px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .p3-header h1 { font-size: 2rem; font-weight: 700; color: #333; }
+    .p3-brand { text-align: right; }
+    .p3-brand .name { font-size: 1.3rem; font-weight: 800; color: #333; }
+    .p3-brand .dot { color: #d4742c; }
+    .p3-brand .sub { font-size: .8rem; color: #555; }
+    .p3-line { margin: 16px 48px 0; height: 2px; background: #d4742c; }
+    .p3-body { padding: 24px 48px 0; }
+    .p3-body .section-header { color: #d4742c; font-weight: 700; font-size: .88rem; text-transform: uppercase; margin-bottom: 12px; letter-spacing: .3px; }
+    .p3-body .bullet-list { margin-bottom: 20px; padding-left: 4px; }
+    .p3-body .bullet-list li { font-size: .86rem; margin-bottom: 6px; list-style: none; padding-left: 20px; position: relative; line-height: 1.5; }
+    .p3-body .bullet-list li::before { content: '●'; position: absolute; left: 0; color: #333; font-size: .6rem; top: 4px; }
+    .p3-body .conditions-title { color: #d4742c; font-weight: 700; font-size: .88rem; margin: 20px 0 16px; }
+    .p3-body .conditions-title::before { content: '✶  '; }
+    .p3-body h4 { font-size: .88rem; font-weight: 700; margin: 16px 0 6px; color: #333; }
+    .p3-body .cond-list { padding-left: 4px; margin-bottom: 4px; }
+    .p3-body .cond-list li { font-size: .84rem; margin-bottom: 5px; list-style: none; padding-left: 18px; position: relative; line-height: 1.55; }
+    .p3-body .cond-list li::before { content: '•'; position: absolute; left: 4px; color: #333; }
+    .p3-footer { position: absolute; bottom: 0; left: 0; right: 0; height: 10px; display: flex; }
+    .p3-footer .bar-orange { flex: 1; background: #d4742c; }
 
-    /* Tareas */
-    .cot-tareas {
-      padding: 24px 48px 0;
-    }
-    .cot-tareas h3 {
-      font-size: .9rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .cot-tareas ul {
-      list-style: none;
-      padding-left: 8px;
-    }
-    .cot-tareas li {
-      font-size: .88rem;
-      margin-bottom: 4px;
-    }
-    .cot-tareas li::before {
-      content: '·  ';
-      font-weight: 700;
-    }
+    /* ── PAGE 4: ACUERDO & FIRMA ── */
+    .p4-sidebar { position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: #d4742c; }
+    .p4-header { padding: 36px 48px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+    .p4-header h1 { font-size: 2rem; font-weight: 700; color: #333; }
+    .p4-brand-logo { text-align: right; }
+    .p4-brand-logo .name { font-size: 1.5rem; font-weight: 900; color: #333; }
+    .p4-brand-logo .dot { color: #d4742c; }
+    .p4-brand-logo .sub { font-size: 1.1rem; font-weight: 700; color: #333; display: block; text-align: right; margin-top: -4px; }
+    .p4-line { margin: 16px 48px 0; height: 1px; background: #ddd; }
+    .p4-body { padding: 28px 48px 0; }
+    .p4-body .commitment-title { color: #d4742c; font-weight: 700; font-size: .85rem; text-transform: uppercase; margin-bottom: 16px; letter-spacing: .3px; }
+    .p4-body p { font-size: .9rem; line-height: 1.65; margin-bottom: 16px; color: #333; }
+    .p4-signature { text-align: center; margin-top: 60px; }
+    .p4-signature .sig-img { font-size: 4rem; color: #333; margin-bottom: 10px; font-family: 'Brush Script MT', cursive; }
+    .p4-sig-line { width: 240px; height: 1px; background: #d4742c; margin: 20px auto 16px; }
+    .p4-sig-info { text-align: center; }
+    .p4-sig-info .sig-brand { color: #d4742c; font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 6px; }
+    .p4-sig-info .sig-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 2px; }
+    .p4-sig-info .sig-role { font-size: .85rem; color: #777; font-style: italic; margin-bottom: 4px; }
+    .p4-sig-info .sig-contact { font-size: .82rem; color: #777; }
+    .p4-bottom-logo { position: absolute; bottom: 50px; left: 0; right: 0; text-align: center; }
+    .p4-bottom-logo .name { font-size: 2rem; font-weight: 900; color: #333; }
+    .p4-bottom-logo .dot { color: #d4742c; }
+    .p4-bottom-logo .sub { font-size: 1.4rem; font-weight: 700; color: #333; display: block; }
+    .p4-footer { position: absolute; bottom: 0; left: 0; right: 0; height: 10px; display: flex; }
+    .p4-footer .bar-orange { flex: 1; background: #d4742c; }
 
-    /* Nota */
-    .cot-nota {
-      padding: 30px 48px;
-      font-size: .78rem;
-      color: #777;
-      font-style: italic;
-    }
-
-    /* Footer bar */
-    .cot-footer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 12px;
-      display: flex;
-    }
-    .cot-footer .bar-orange { flex: 1; background: #d4742c; }
-    .cot-footer .bar-red { width: 30px; background: #c0392b; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 820px) {
-      #cotizacion { width: 100%; min-height: auto; }
-    }
+    /* ══════════ RESPONSIVE ══════════ */
+    @media (max-width: 820px) { .page, .pdf-container { width: 100%; } .page { height: auto; min-height: 700px; } }
     @media (max-width: 600px) {
       .form-grid { grid-template-columns: 1fr; }
-      .option-row {
-        grid-template-columns: 1fr 1fr;
-      }
+      .option-row { grid-template-columns: 1fr 1fr; }
       .option-row .form-group:first-child { grid-column: 1 / -1; }
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════ FORMULARIO ═══════ -->
+<!-- ═══════════════ FORMULARIO ═══════════════ -->
 <div class="form-panel" id="formPanel">
   <h2>Cotizador — SOMOS Agencia</h2>
 
@@ -338,113 +213,240 @@
     </div>
   </div>
 
-  <!-- Opciones -->
-  <div class="options-section">
-    <h3>Opciones de Presupuesto</h3>
-    <div id="optionsContainer">
-      <!-- rows dinámicas -->
-    </div>
-    <button class="btn-add" onclick="addOption()">+ Agregar opción</button>
-  </div>
+  <h3 class="section-title">Opciones de Presupuesto</h3>
+  <div id="optionsContainer"></div>
+  <button class="btn-add" onclick="addOption()">+ Agregar opción</button>
 
-  <!-- Tareas del Staff -->
-  <div class="tareas-section">
-    <h3 style="color:#d4742c; font-size:1.1rem; margin-bottom:8px;">Tareas del Staff</h3>
-    <div id="tareasContainer"></div>
-    <button class="btn-add-tarea" onclick="addTarea()">+ Agregar tarea</button>
-  </div>
+  <h3 class="section-title">Tareas del Staff</h3>
+  <div id="tareasContainer"></div>
+  <button class="btn-add-tarea" onclick="addTarea()">+ Agregar tarea</button>
 
-  <!-- Nota al pie -->
-  <div class="nota-section">
+  <div style="margin-top:20px">
     <div class="form-group full-width">
-      <label>Nota al pie</label>
+      <label>Nota al pie (Presupuesto)</label>
       <textarea id="nota" rows="2">* Personal local (Mendoza). Los importes son actuales y tienen validez de 15 días. Incluye seguros obligatorios.</textarea>
     </div>
   </div>
 
-  <button class="btn-generate" onclick="generate()">Generar Cotización</button>
+  <!-- Foto portada -->
+  <h3 class="section-title">Foto de Portada (opcional)</h3>
+  <div class="photo-upload">
+    <div class="photo-drop" id="photoDrop" onclick="document.getElementById('photoInput').click()">
+      Hacé clic o arrastrá una imagen aquí
+    </div>
+    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+  </div>
+
+  <button class="btn-generate" onclick="generate()">Generar Cotización (4 páginas)</button>
 </div>
 
-<!-- ═══════ PREVIEW ═══════ -->
+<!-- ═══════════════ PREVIEW ═══════════════ -->
 <div class="preview-wrapper" id="previewWrapper">
   <div class="preview-actions">
     <button class="btn-download" onclick="downloadPDF()">Descargar PDF</button>
     <button class="btn-edit" onclick="backToEdit()">Volver a editar</button>
   </div>
 
-  <div id="cotizacion">
-    <!-- Header -->
-    <div class="cot-header">
-      <h1 id="cotNum">02 — Presupuesto</h1>
-      <div class="brand">
-        <div class="name">SOMOS</div>
-        <div class="sub">agencia</div>
+  <div class="pdf-container" id="pdfContainer">
+
+    <!-- ══ PAGE 1: PORTADA ══ -->
+    <div class="page" id="page1">
+      <div class="p1-sidebar"></div>
+      <div class="p1-logo">
+        <span class="logo-somos">SOMOS<span class="logo-dot" style="color:#d4742c">.</span></span><br>
+        <span class="logo-agencia" style="margin-left:18px;">agencia</span>
       </div>
+      <div class="p1-divider"></div>
+      <div class="p1-title">
+        <div class="subtitle">Propuesta de</div>
+        <h1>STAFF PARA<br>EVENTOS</h1>
+      </div>
+      <div class="p1-desc">
+        Con más de 10 años acompañando marcas y productoras en Argentina, sabemos que el equipo lo es todo.
+        Promotoras, recepcionistas y staff capacitado para que cada evento salga perfecto.
+      </div>
+      <div class="p1-photo" id="p1Photo">
+        <div style="width:100%;height:100%;background:#444;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:.9rem;" id="p1PhotoPlaceholder">
+          Foto del equipo
+        </div>
+        <div class="p1-photo-overlay">
+          <div class="years-label">Más de</div>
+          <div class="years-num">10 años</div>
+          <div class="years-sub">en eventos y activaciones en toda Argentina.</div>
+          <div class="brand-bottom">
+            <span>Somos</span> <span>agencia.</span>
+          </div>
+        </div>
+      </div>
+      <div class="p1-contact">somosagenciastaff.com  ·  +54 9 261 235-1387</div>
     </div>
 
-    <!-- Info cards -->
-    <div class="cot-info">
-      <div class="info-card">
-        <div class="card-label">Cliente</div>
-        <div class="card-value" id="pCliente"></div>
+    <!-- ══ PAGE 2: PRESUPUESTO ══ -->
+    <div class="page" id="page2">
+      <div class="p2-header">
+        <h1>02 — Presupuesto</h1>
+        <div class="brand">
+          <div class="name">SOMOS</div>
+          <div class="sub">agencia</div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="card-label">Lugar</div>
-        <div class="card-value" id="pLugar"></div>
+      <div class="p2-info">
+        <div class="info-card">
+          <div class="card-label">Cliente</div>
+          <div class="card-value" id="pCliente"></div>
+        </div>
+        <div class="info-card">
+          <div class="card-label">Lugar</div>
+          <div class="card-value" id="pLugar"></div>
+        </div>
+        <div class="info-card">
+          <div class="card-label">Fechas</div>
+          <div class="card-value" id="pFechas"></div>
+        </div>
+        <div class="info-card">
+          <div class="card-label">Horario</div>
+          <div class="card-value" id="pHorario"></div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="card-label">Fechas</div>
-        <div class="card-value" id="pFechas"></div>
+      <div class="p2-table">
+        <table>
+          <thead><tr><th>Concepto</th><th>Precio por día</th><th>Cantidad</th><th>Días</th><th>Total</th></tr></thead>
+          <tbody id="pTableBody"></tbody>
+        </table>
       </div>
-      <div class="info-card">
-        <div class="card-label">Horario</div>
-        <div class="card-value" id="pHorario"></div>
+      <div class="p2-tareas">
+        <h3>Tareas del Staff</h3>
+        <ul id="pTareas"></ul>
       </div>
+      <div class="p2-nota" id="pNota"></div>
+      <div class="p2-footer"><div class="bar-red"></div><div class="bar-orange"></div></div>
     </div>
 
-    <!-- Table -->
-    <div class="cot-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Concepto</th>
-            <th>Precio por día</th>
-            <th>Cantidad</th>
-            <th>Días</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody id="pTableBody"></tbody>
-      </table>
+    <!-- ══ PAGE 3: CONDICIONES ══ -->
+    <div class="page" id="page3">
+      <div class="p3-sidebar"></div>
+      <div class="p3-header">
+        <h1>03 — Condiciones del Servicio</h1>
+        <div class="p3-brand">
+          <span class="name">SOMOS<span class="dot">.</span></span><br>
+          <span class="sub" style="margin-left:24px;">agencia</span>
+        </div>
+      </div>
+      <div class="p3-line"></div>
+      <div class="p3-body">
+        <div class="section-header">El presente presupuesto incluye</div>
+        <ul class="bullet-list">
+          <li>Gestión y contratación de los seguros obligatorios para los recursos.</li>
+          <li>Se realiza Factura C.</li>
+        </ul>
+
+        <div class="conditions-title">Notas y condiciones del servicio</div>
+
+        <h4>1. Condiciones de contratación</h4>
+        <ul class="cond-list">
+          <li>El servicio podrá abonarse mediante una seña del 50% y saldo restante previo al evento o al finalizar el evento, tenemos flexibilidad.</li>
+          <li>Presupuesto válido por 15 días desde su emisión.</li>
+        </ul>
+
+        <h4>2. Horas y extras</h4>
+        <ul class="cond-list">
+          <li>El servicio contempla las horas indicadas en el presente presupuesto.</li>
+          <li>Las horas adicionales se cotizan aparte.</li>
+        </ul>
+
+        <h4>3. Uniforme</h4>
+        <ul class="cond-list">
+          <li>Incluye uniforme básico (negro clásico).</li>
+          <li>Uniformes personalizados o especiales se cotizan aparte.</li>
+          <li>Servicio de diseño y producción de uniformes disponible con un mínimo de 15 días de anticipación.</li>
+        </ul>
+
+        <h4>4. Perfil del staff</h4>
+        <ul class="cond-list">
+          <li>Personal seleccionado según la imagen de marca y tipo de evento.</li>
+          <li>Se realiza briefing previo para alinear comunicación, estética y tareas asignadas.</li>
+        </ul>
+
+        <h4>5. Supervisión</h4>
+        <ul class="cond-list">
+          <li>Posibilidad de sumar coordinador/a de equipo para supervisión general del servicio.</li>
+        </ul>
+      </div>
+      <div class="p3-footer"><div class="bar-orange"></div></div>
     </div>
 
-    <!-- Tareas -->
-    <div class="cot-tareas">
-      <h3>Tareas del Staff</h3>
-      <ul id="pTareas"></ul>
+    <!-- ══ PAGE 4: ACUERDO & FIRMA ══ -->
+    <div class="page" id="page4">
+      <div class="p4-sidebar"></div>
+      <div class="p4-header">
+        <h1>04 — Acuerdo & Firma</h1>
+        <div class="p4-brand-logo">
+          <span class="name">SOMOS<span class="dot">.</span></span>
+          <span class="sub">agencia</span>
+        </div>
+      </div>
+      <div class="p4-line"></div>
+      <div class="p4-body">
+        <div class="commitment-title">Compromiso de SOMOS Agencia Staff</div>
+        <p>SOMOS Agencia Staff se compromete a mantener la confidencialidad de toda información compartida por el cliente en el marco de esta propuesta comercial. Los datos, costos y condiciones aquí detallados son de uso exclusivo del destinatario y no serán divulgados a terceros bajo ninguna circunstancia.</p>
+        <p>Esta propuesta no implica obligación contractual hasta tanto no sea confirmada por escrito. Una vez aceptada, SOMOS Agencia Staff garantiza la provisión del personal acordado en tiempo y forma.</p>
+      </div>
+      <div class="p4-signature">
+        <div class="sig-img">&#x2701;</div>
+      </div>
+      <div class="p4-sig-line"></div>
+      <div class="p4-sig-info">
+        <div class="sig-brand">SOMOS AGENCIA STAFF</div>
+        <div class="sig-name">Lucía Delavanso</div>
+        <div class="sig-role">Directora Comercial</div>
+        <div class="sig-contact">l.delavanso@somosagenciastaff.com  ·  +54 9 261 235-1387</div>
+      </div>
+      <div class="p4-bottom-logo">
+        <span class="name">SOMOS<span class="dot">.</span></span>
+        <span class="sub">agencia</span>
+      </div>
+      <div class="p4-footer"><div class="bar-orange"></div></div>
     </div>
 
-    <!-- Nota -->
-    <div class="cot-nota" id="pNota"></div>
-
-    <!-- Footer bar -->
-    <div class="cot-footer">
-      <div class="bar-red"></div>
-      <div class="bar-orange"></div>
-    </div>
   </div>
 </div>
 
-<!-- html2pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
   let optionCount = 0;
   let tareaCount = 0;
+  let coverPhotoData = null;
 
   function formatMoney(n) {
     return '$ ' + Number(n).toLocaleString('es-AR');
   }
+
+  // Photo handling
+  function handlePhoto(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        coverPhotoData = e.target.result;
+        const drop = document.getElementById('photoDrop');
+        drop.classList.add('has-photo');
+        drop.innerHTML = '<img src="' + coverPhotoData + '" alt="Foto portada">';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  const photoDrop = document.getElementById('photoDrop');
+  photoDrop.addEventListener('dragover', function(e) { e.preventDefault(); this.style.borderColor = '#d4742c'; });
+  photoDrop.addEventListener('dragleave', function() { this.style.borderColor = ''; });
+  photoDrop.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.style.borderColor = '';
+    if (e.dataTransfer.files.length) {
+      document.getElementById('photoInput').files = e.dataTransfer.files;
+      handlePhoto(document.getElementById('photoInput'));
+    }
+  });
 
   function addOption() {
     optionCount++;
@@ -454,51 +456,33 @@
     div.className = 'option-row';
     div.id = 'opt-' + optionCount;
     div.innerHTML = `
-      <div class="form-group">
-        <label>Concepto</label>
+      <div class="form-group"><label>Concepto</label>
         <input type="text" class="opt-concepto" placeholder="Ej: Opción ${letter} — 1 promotora (4 hs/día)" value="Opción ${letter} — ">
       </div>
-      <div class="form-group">
-        <label>Precio/día</label>
+      <div class="form-group"><label>Precio/día</label>
         <input type="number" class="opt-precio" placeholder="90000">
       </div>
-      <div class="form-group">
-        <label>Cantidad</label>
+      <div class="form-group"><label>Cantidad</label>
         <input type="number" class="opt-cantidad" value="1" min="1">
       </div>
-      <div class="form-group">
-        <label>Días</label>
+      <div class="form-group"><label>Días</label>
         <input type="number" class="opt-dias" value="5" min="1">
       </div>
-      <div class="form-group">
-        <label>Total</label>
+      <div class="form-group"><label>Total</label>
         <input type="text" class="opt-total" readonly style="background:#f5f5f5;">
       </div>
       <button class="btn-remove" onclick="removeOption(${optionCount})">✕</button>
     `;
     container.appendChild(div);
-
-    const precioInput = div.querySelector('.opt-precio');
-    const cantidadInput = div.querySelector('.opt-cantidad');
-    const diasInput = div.querySelector('.opt-dias');
-    const totalInput = div.querySelector('.opt-total');
-
-    function calcTotal() {
-      const p = parseFloat(precioInput.value) || 0;
-      const c = parseFloat(cantidadInput.value) || 0;
-      const d = parseFloat(diasInput.value) || 0;
-      totalInput.value = p && c && d ? formatMoney(p * c * d) : '';
+    const p = div.querySelector('.opt-precio'), c = div.querySelector('.opt-cantidad'), d = div.querySelector('.opt-dias'), t = div.querySelector('.opt-total');
+    function calc() {
+      const pv = parseFloat(p.value)||0, cv = parseFloat(c.value)||0, dv = parseFloat(d.value)||0;
+      t.value = pv&&cv&&dv ? formatMoney(pv*cv*dv) : '';
     }
-
-    precioInput.addEventListener('input', calcTotal);
-    cantidadInput.addEventListener('input', calcTotal);
-    diasInput.addEventListener('input', calcTotal);
+    p.addEventListener('input', calc); c.addEventListener('input', calc); d.addEventListener('input', calc);
   }
 
-  function removeOption(id) {
-    const el = document.getElementById('opt-' + id);
-    if (el) el.remove();
-  }
+  function removeOption(id) { const el = document.getElementById('opt-'+id); if(el) el.remove(); }
 
   function addTarea(value) {
     tareaCount++;
@@ -507,16 +491,13 @@
     div.className = 'tarea-row';
     div.id = 'tarea-' + tareaCount;
     div.innerHTML = `
-      <input type="text" class="tarea-text" value="${value || ''}" placeholder="Ej: Promoción de local en vía pública">
+      <input type="text" class="tarea-text" value="${value||''}" placeholder="Ej: Promoción de local en vía pública">
       <button class="btn-remove-sm" onclick="removeTarea(${tareaCount})">✕</button>
     `;
     container.appendChild(div);
   }
 
-  function removeTarea(id) {
-    const el = document.getElementById('tarea-' + id);
-    if (el) el.remove();
-  }
+  function removeTarea(id) { const el = document.getElementById('tarea-'+id); if(el) el.remove(); }
 
   function generate() {
     const cliente = document.getElementById('cliente').value.trim();
@@ -527,6 +508,22 @@
 
     if (!cliente) { alert('Completá el nombre del cliente.'); return; }
 
+    // Page 1: photo
+    if (coverPhotoData) {
+      const photoDiv = document.getElementById('p1Photo');
+      const placeholder = document.getElementById('p1PhotoPlaceholder');
+      if (placeholder) placeholder.remove();
+      let img = photoDiv.querySelector('img.cover-img');
+      if (!img) {
+        img = document.createElement('img');
+        img.className = 'cover-img';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        photoDiv.insertBefore(img, photoDiv.firstChild);
+      }
+      img.src = coverPhotoData;
+    }
+
+    // Page 2: data
     document.getElementById('pCliente').textContent = cliente;
     document.getElementById('pLugar').textContent = lugar;
     document.getElementById('pFechas').textContent = fechas;
@@ -535,21 +532,14 @@
 
     const tbody = document.getElementById('pTableBody');
     tbody.innerHTML = '';
-    const rows = document.querySelectorAll('.option-row');
-    rows.forEach(row => {
+    document.querySelectorAll('.option-row').forEach(row => {
       const concepto = row.querySelector('.opt-concepto').value;
-      const precio = parseFloat(row.querySelector('.opt-precio').value) || 0;
-      const cantidad = parseFloat(row.querySelector('.opt-cantidad').value) || 0;
-      const dias = parseFloat(row.querySelector('.opt-dias').value) || 0;
+      const precio = parseFloat(row.querySelector('.opt-precio').value)||0;
+      const cantidad = parseFloat(row.querySelector('.opt-cantidad').value)||0;
+      const dias = parseFloat(row.querySelector('.opt-dias').value)||0;
       const total = precio * cantidad * dias;
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${concepto}</td>
-        <td>${formatMoney(precio)}</td>
-        <td>${cantidad}</td>
-        <td>${dias}</td>
-        <td class="total-cell">${formatMoney(total)}</td>
-      `;
+      tr.innerHTML = `<td>${concepto}</td><td>${formatMoney(precio)}</td><td>${cantidad}</td><td>${dias}</td><td class="total-cell">${formatMoney(total)}</td>`;
       tbody.appendChild(tr);
     });
 
@@ -573,23 +563,30 @@
   }
 
   function downloadPDF() {
-    const element = document.getElementById('cotizacion');
+    const container = document.getElementById('pdfContainer');
     const cliente = document.getElementById('cliente').value.trim().replace(/\s+/g, '_') || 'cotizacion';
     const lugar = document.getElementById('lugar').value.trim().replace(/\s+/g, '_') || '';
-    const filename = `Presupuesto_SOMOS_${cliente}${lugar ? '_' + lugar : ''}.pdf`;
+    const filename = `Presupuesto_SOMOS_${cliente}${lugar ? '_'+lugar : ''}.pdf`;
 
     const opt = {
-      margin:       0,
-      filename:     filename,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      margin: 0,
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['css', 'legacy'], before: '.page' }
     };
 
-    html2pdf().set(opt).from(element).save();
+    // Remove margin from first page for PDF
+    const pages = container.querySelectorAll('.page');
+    pages.forEach(p => p.style.marginBottom = '0');
+
+    html2pdf().set(opt).from(container).save().then(() => {
+      pages.forEach(p => p.style.marginBottom = '30px');
+    });
   }
 
-  // Init defaults
+  // Init
   addOption();
   addOption();
   addTarea('Promoción de local en vía pública');
